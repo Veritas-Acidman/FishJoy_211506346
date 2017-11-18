@@ -9,14 +9,19 @@
 //
 //
 
-
 #if !defined(_STATICDATA_H)
 #define _STATICDATA_H
 
 #include<string>
-#include "cocos2d.h"
+#include"cocos2d.h"
 using namespace std;
+
 USING_NS_CC;
+
+// using cocos2d::CCDictionary;
+// using cocos2d::CCPointFromString;
+// using cocos2d::CCRectFromString;
+// using cocos2d::CCSizeFromString;
 
 #define STATIC_DATA_FILENAME "static_data.plist"
 #define STATIC_DATA_STRING(key) StaticData::sharedStaticData()->stringValueFromKey(key)
@@ -28,21 +33,22 @@ USING_NS_CC;
 #define STATIC_DATA_SIZE(key) StaticData::sharedStaticData()->sizeFromKey(key)
 
 
+
 class StaticData:
-	public CCObject {
+    public CCObject{
 public:
 	static StaticData* sharedStaticData();
 	static void purge();
-	int intValueFromKey(const string& key);
-	const char* stringValueFromKey(const string& key);
-	float floatValueFromKey(const string& key);
-	bool booleanFromKey(const string& key);
-	CCPoint pointFromKey(const string& key);
-	CCRect rectFromKey(const string& key);
-	CCSize sizeFromKey(const string& key);
+	int intValueFromKey(const std::string &key);
+	const char* stringValueFromKey(const std::string &key);
+	float floatValueFromKey(const std::string &key);
+	bool booleanFromKey(const std::string &key);
+	cocos2d::CCPoint pointFromKey(const std::string &key);
+	cocos2d::CCRect rectFromKey(const std::string &key);
+	cocos2d::CCSize sizeFromKey(const std::string &key);
 protected:
-	CCDictionary* _dictionary;
-	string _staticFileName;
+	cocos2d::CCDictionary* _dictionary;
+	std::string _staticFileName;
 	bool init();
 private:
 	~StaticData();
