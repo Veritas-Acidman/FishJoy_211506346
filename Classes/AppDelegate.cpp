@@ -32,7 +32,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     //CCScene *pScene = HelloWorld::scene();
 	//CCScene *pScene = GameMenuLayer::scene();
 
-	CCScene *pScene = GameScene::scene();
+	CCScene *pScene = GameMenuLayer::scene();
 
     // run
     pDirector->runWithScene(pScene);
