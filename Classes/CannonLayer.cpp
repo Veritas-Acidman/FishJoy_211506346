@@ -1,6 +1,7 @@
 #include "CannonLayer.h"
 
-
+#include "Weapon.h"
+#include "Bullet.h"
 CannonLayer::CannonLayer(void)
 {
 }
@@ -17,6 +18,7 @@ bool CannonLayer::init()
 		return false;
 	}
 	_weapon = Weapon::create((CannonType)0);
+	
 	addChild(_weapon,1);
 	CCSize winSize=CCDirector::sharedDirector()->getWinSize();
 
@@ -33,6 +35,7 @@ bool CannonLayer::init()
 	menu->alignItemsHorizontallyWithPadding(120);
 	addChild(menu,0);
 
+
 	menu->setPosition(ccp(winSize.width/2-20,_addMenuItem->getContentSize().height/2));
 	return true;
 }
@@ -46,3 +49,13 @@ void CannonLayer::switchCannonCallback(cocos2d::CCObject *sender)
 	_weapon->changeCannon(operate);
 
 }
+
+void CannonLayer::aimAt(cocos2d::CCPoint target)
+{
+	_weapon->aimAt(target);
+}
+void CannonLayer::shootTo(cocos2d::CCPoint target)
+{
+	_weapon->shootTo(target);
+}
+	

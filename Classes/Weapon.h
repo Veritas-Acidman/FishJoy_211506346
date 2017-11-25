@@ -18,17 +18,20 @@ public:
 	CannonType getCannonType();
 	CCSize getCannonSize();
 	void changeCannon(CannonOperate operate);
-
-	//Weapon(void);
-	//virtual ~Weapon(void);
+	void aimAt(CCPoint target);
+	void shootTo(CCPoint target);
 	~Weapon();
 protected:
 	CC_SYNTHESIZE_READONLY(Cannon *,_cannon,Cannon);
 	CC_SYNTHESIZE_READONLY(CCArray *,_bullets,Bullets);
 	CC_SYNTHESIZE_READONLY(CCArray *,_fishNets,FishNets);
+	
+	Bullet *getBulletToShoot();
 private:
 
 };
+
+
 
 
 

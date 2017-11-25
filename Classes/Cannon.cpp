@@ -75,11 +75,19 @@ CCSize Cannon::getSize()
 }
 float Cannon::getFireRange()
 {
-	//return 300*(_type+1);
-	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-	double temp = pow(winSize.width/2,2)+pow(winSize.height,2);
-	double result = sqrt(temp);
-	return result/7*(_type+1);
+	return 300*(_type+1);
+}
 
 
+
+void Cannon::aimAt(cocos2d::CCPoint target)
+{
+	CCLOG("targetX:%f",target.x);
+	CCLOG("targetY:%f",target.y);
+	if(target.y<0){
+		target.y=0.0;
+	}
+	CCPoint location = getParent()->convertToWorldSpace(getPosition());
+	float angle = ccpAngleSigned(ccpSub(target,location),CCPointMake(0,1));
+	this->setRotation(CC_RADIANS_TO_DEGREES(angle));
 }

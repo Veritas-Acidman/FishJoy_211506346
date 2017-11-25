@@ -1,5 +1,4 @@
 #include "GameScene.h"
-
 #include "CannonLayer.h"
 
 GameScene::GameScene(void)
@@ -34,8 +33,18 @@ bool GameScene::init()
 			break;
 		}
 		this->addChild(fishLayer);
-		CannonLayer * cannonLayer = CannonLayer::create();
-		this->addChild(cannonLayer);
+
+		//CannonLayer * cannonLayer = CannonLayer::create();
+		//this->addChild(cannonLayer);
+		_cannonLayer = CannonLayer::create();
+		CC_BREAK_IF(!_cannonLayer);
+		this->addChild(_cannonLayer);
+
+		_touchLayer=TouchLayer::create();
+		CC_BREAK_IF(!_touchLayer);
+		this->addChild(_touchLayer);
+
+
 		menuLayer = MenuLayer::create();
 		CC_BREAK_IF(!menuLayer);
 		CC_SAFE_RETAIN(menuLayer);
@@ -54,12 +63,11 @@ void GameScene::preloadResources(void)
 	spriteFrameCache->addSpriteFramesWithFile("FishActor-Small-ipadhd.plist"); 
 	spriteFrameCache->addSpriteFramesWithFile("FishActor-Mid-ipadhd.plist");
 
-	spriteFrameCache->addSpriteFramesWithFile("cannon-ipadhd.plist");//直接写resources里的文件名
+	spriteFrameCache->addSpriteFramesWithFile("cannon-ipadhd.plist");
 	spriteFrameCache->addSpriteFramesWithFile("Item-chaojiwuqi-ipadhd.plist");
 
 
 	CCTextureCache *textureCache = CCTextureCache::sharedTextureCache();
-	//textureCache->addImage(STATIC_DATA_STRING("button_add")
 	textureCache->addImage("ui_button_63-ipadhd.png");
 	textureCache->addImage("ui_button_65-ipadhd.png");
 
@@ -94,4 +102,13 @@ void GameScene::preloadResources(void)
 GameScene::~GameScene(void)
 {
 	CC_SAFE_RELEASE_NULL(menuLayer);
+}
+
+void GameScene::cannonAimAt(CCPoint target)
+{
+	_cannonLayer->aimAt(target);
+}
+void GameScene::cannonShootTo(CCPoint target)
+{
+	_cannonLayer->shootTo(target);
 }
