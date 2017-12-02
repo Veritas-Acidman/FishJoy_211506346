@@ -1,20 +1,10 @@
 #include "Weapon.h"
 
-#include "StaticData.h"
 #define BULLET_COUNT 10
 
-//Weapon::Weapon(void)
-//{
-//}
-//
-//
-//Weapon::~Weapon(void)
-//{
-//}
-
-Weapon *Weapon::create(CannonType type)
+Weapon* Weapon::create(CannonType type)
 {
-	Weapon *weapon = new Weapon();
+	Weapon* weapon = new Weapon();
 	if(weapon && weapon->init(type))
 	{
 		weapon->autorelease();
@@ -32,83 +22,114 @@ bool Weapon::init(CannonType type)
 	do
 	{
 		CC_BREAK_IF(!CCNode::init());
-		_cannon=Cannon::create(type);
+		_cannon = Cannon::create(type);
 		CC_BREAK_IF(!_cannon);
-		this->addChild(_cannon,1);
-		_bullets=CCArray::createWithCapacity(BULLET_COUNT);
+		addChild(_cannon, 1);
+		
+		_bullets = CCArray::createWithCapacity(BULLET_COUNT);
 		CC_BREAK_IF(!_bullets);
 		CC_SAFE_RETAIN(_bullets);
-		_fishNets=CCArray::createWithCapacity(BULLET_COUNT);
+		
+		_fishNets = CCArray::createWithCapacity(BULLET_COUNT);
 		CC_BREAK_IF(!_fishNets);
 		CC_SAFE_RETAIN(_fishNets);
-		for(int i=0;i<BULLET_COUNT;i++)
+
+		_particils = CCArray::createWithCapacity(BULLET_COUNT);
+		CC_BREAK_IF(!_particils);
+		CC_SAFE_RETAIN(_particils);
+		
+		for(int i = 0; i < BULLET_COUNT; i++)
 		{
-			Bullet *bullet = Bullet::create();
+			Bullet* bullet = Bullet::create();
 			_bullets->addObject(bullet);
-			this->addChild(bullet);
+			addChild(bullet);
 			bullet->setVisible(false);
-			FishNet *fishNet=FishNet::create();
+			
+			FishNet* fishNet = FishNet::create();
 			_fishNets->addObject(fishNet);
-			this->addChild(fishNet);
+			addChild(fishNet);
 			fishNet->setVisible(false);
 			bullet->setUserObject(fishNet);
+
+			CCParticleSystemQuad *particle = CCParticleSystemQuad::create("yuwanglizi.plist");
+			particle->stopSystem();
+			this->addChild(particle);
+			_particils->addObject(particle);
+
+			fishNet->setUserObject(particle);
 		}
 		return true;
 	}while(0);
+
 	return false;
 }
+
 CCSize Weapon::getCannonSize()
 {
 	return _cannon->getSize();
 }
+
 CannonType Weapon::getCannonType()
 {
 	return _cannon->getType();
 }
+
 void Weapon::changeCannon(CannonOperate operate)
 {
-	int type=(int) _cannon->getType();
-	type+=operate;
+	int type = (int) _cannon->getType();
+	type += operate;
 	_cannon->setType((CannonType)type);
 }
-Weapon::~Weapon()
+
+Weapon::~Weapon(void)
 {
 	CC_SAFE_RELEASE(_bullets);
 	CC_SAFE_RELEASE(_fishNets);
+	CC_SAFE_RELEASE(_particils);
 }
 
+void Weapon::aimAt(CCPoint target)
+{
+	_cannon->aimAt(target);
+}
 
 void Weapon::shootTo(CCPoint target)
 {
-	Bullet *bullet = getBulletToShoot();
-	if(bullet == NULL)
-	{
+	Bullet* bullet= getBulletToShoot();
+	if(bullet == NULL){
 		return;
 	}
-	CCPoint pointWordSpace = getParent()->convertToWorldSpace(getPosition());
-	float distance = ccpDistance(target,pointWordSpace);
+	CCPoint pointWorldSpace = getParent()->convertToWorldSpace(getPosition());
+	float distance = ccpDistance(target, pointWorldSpace);
 	if(distance > _cannon->getFireRange())
 	{
-		CCPoint normal = ccpNormalize(ccpSub(target,pointWordSpace));
-		CCPoint mult = ccpMult(normal,_cannon->getFireRange());
-		target = ccpAdd(pointWordSpace,mult);
+		CCPoint normal = ccpNormalize(ccpSub(target, pointWorldSpace));
+		CCPoint mult = ccpMult(normal, _cannon->getFireRange());
+		target = ccpAdd(pointWorldSpace, mult);
 	}
-	bullet->flyTo(target,_cannon->getType());
+	bullet->flyTo(target, _cannon->getType());
 }
-Bullet *Weapon::getBulletToShoot()
+
+Bullet* Weapon::getBulletToShoot()
 {
-	CCObject *obj;
-	CCARRAY_FOREACH(_bullets,obj)
+	CCObject* obj;
+	CCARRAY_FOREACH(_bullets, obj)
 	{
-			Bullet *bullet = (Bullet *)obj;
-			if(bullet->isVisible()==false)
-			{
-				return bullet;
-			}
+		Bullet* bullet = (Bullet*)obj;
+		if(!bullet->isVisible())
+		{
+			return bullet;
+		}
 	}
 	return NULL;
 }
-void Weapon::aimAt(cocos2d::CCPoint target)
+
+CCRect Weapon::getCollisionArea(Bullet *bullet)
 {
-	_cannon->aimAt(target);
+	FishNet *_fishNets = (FishNet *)bullet->getUserObject();
+	if(_fishNets->isVisible())
+	{
+		return _fishNets->getCollisionArea();
+	}
+	return CCRectZero;
 }

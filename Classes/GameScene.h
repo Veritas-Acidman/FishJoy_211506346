@@ -1,10 +1,13 @@
 #pragma once
-//#include "d:\c++实训\c++实训软件工具\cocos2d-x-2.2.5\cocos2dx\layers_scenes_transitions_nodes\ccscene.h"
-
 #include "cocos2d.h"
 #include "BackgroundLayer.h"
 #include "FishLayer.h"
 #include "MenuLayer.h"
+#include "CannonLayer.h"
+#include "TouchLayer.h"
+#include "Bullet.h"
+#include "Fish.h"
+
 USING_NS_CC;
 
 class GameScene :
@@ -12,18 +15,25 @@ class GameScene :
 {
 public:
 	GameScene(void);
-	
+	//static GameScene * create();
 	CREATE_FUNC(GameScene)
 	virtual bool init();
+	virtual ~GameScene();
 
-	static CCScene* scene(void);
+	void cannonAimAt(CCPoint target);
+	void cannonShootTo(CCPoint target);
 
-	virtual ~GameScene(void);
 protected:
-	BackgroundLayer *backgroundLayer;
-	FishLayer *fishLayer;
-	MenuLayer *menuLayer;
-
+	BackgroundLayer* _backgroundLayer;
+	FishLayer* _fishLayer;
+	MenuLayer* _menuLayer;
+	CannonLayer* _cannonLayer;
+	TouchLayer* _touchLayer;
 	void preloadResources(void);
+	bool checkOutCollisionBetweenFishesAndBullet(Bullet *bullet);
+	void checkOutCollision();
+	virtual void update(float delta);
+	void fishWillBeCaught(Fish* fish);
+	void checkOutCollisionBetweenFishesAndFishingNet(Bullet *bulet);
 };
 

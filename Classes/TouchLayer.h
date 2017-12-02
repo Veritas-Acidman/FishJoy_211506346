@@ -8,14 +8,12 @@ class TouchLayer :
 public:
 	TouchLayer(void);
 	virtual ~TouchLayer(void);
-
 	CREATE_FUNC(TouchLayer);
 	bool init();
 protected:
-	virtual bool ccTouchBegan(CCTouch *pTouch,CCEvent *pEvent);
-	virtual void ccTouchMoved(CCTouch *pTouch,CCEvent *pEvent);
-	virtual void ccTouchEnded(CCTouch *pTouch,CCEvent *pEvent);
+	virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
+	virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent);
+	virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);
 	virtual void registerWithTouchDispatcher();
-	GameScene *getGameScene();
+	GameScene* getGameScene(); 
 };
-
