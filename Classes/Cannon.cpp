@@ -91,3 +91,4 @@ void Cannon::aimAt(CCPoint target)
 	float angle = ccpAngleSigned(ccpSub(target, location), CCPointMake(0, 1));
 	this->setRotation(CC_RADIANS_TO_DEGREES(angle));
 }
+

@@ -12,4 +12,3 @@ public:
 	virtual ~MenuLayer(void);
 };
 
-
