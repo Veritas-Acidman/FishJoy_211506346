@@ -9,7 +9,7 @@ USING_NS_CC;
 #define _WEAPON_H
 
 class Weapon :
-public CCNode
+	public CCNode
 {
 public:
 	static Weapon* create(CannonType type = k_Cannon_Type_1);
@@ -19,8 +19,8 @@ public:
 	void changeCannon(CannonOperate operate);
 	~Weapon(void);
 	void aimAt(CCPoint target);
-	void shootTo(CCPoint target);
-	CCRect Weapon::getCollisionArea(Bullet *bullet);
+	bool shootTo(CCPoint target);
+	CCRect getCollisionArea(Bullet* bullet);
 protected:
 	CC_SYNTHESIZE_READONLY(Cannon*, _cannon, Cannon);
 	CC_SYNTHESIZE_READONLY(CCArray*, _bullets, Bullets);

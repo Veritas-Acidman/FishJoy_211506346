@@ -1,5 +1,4 @@
 #include "FishNet.h"
-#include "StaticData.h"
 
 FishNet::FishNet(void)
 {
@@ -15,10 +14,10 @@ bool FishNet::init()
 	{
 		return false;
 	}
-	//weapon_net_%02d.png
-	CCString *fileName=CCString::createWithFormat("weapon_net_%03d.png",1);
+
+	CCString *fileName = CCString::createWithFormat("weapon_net_%03d.png",1);
 	_fishNetSprite = CCSprite::createWithSpriteFrameName(fileName->getCString());
-	_fishNetSprite->setAnchorPoint(ccp(0.5, 1));
+	_fishNetSprite->setAnchorPoint(ccp(0.5, 0.5));
 	addChild(_fishNetSprite);
 	return true;
 }
@@ -58,14 +57,11 @@ void FishNet::showAt(CCPoint pos,int type/*= 0*/)
 {
 	setVisible(true);
 	setPosition(pos);
-	CCString *fishNetFrameName = CCString::createWithFormat("weapon_net_%03d.png", type + 1);
+	CCString* fishNetFrameName = CCString::createWithFormat("weapon_net_%03d.png", type + 1);
 	this->_fishNetSprite->setDisplayFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(fishNetFrameName->getCString()));
 	stopAllActions();
-	/*CCDelayTime * delay = CCDelayTime::create(1);
-	CCSequence *sequence = CCSequence::create(delay, CCHide::create(),NULL);*/
-	CCSequence *sequence = CCSequence::create(CCDelayTime::create(1), CCHide::create(),NULL);
-
-	CCParticleSystemQuad *particle = (CCParticleSystemQuad *)getUserObject();
+	CCSequence* sequence = CCSequence::create(CCDelayTime::create(1), CCHide::create(),NULL);
+	CCParticleSystemQuad* particle = (CCParticleSystemQuad*)getUserObject();
 	particle->setPosition(pos);
 	particle->resetSystem();
 	runAction(sequence);

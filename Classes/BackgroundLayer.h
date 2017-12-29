@@ -12,5 +12,3 @@ public:
 	virtual bool init();
 	virtual ~BackgroundLayer(void);
 };
-
-
